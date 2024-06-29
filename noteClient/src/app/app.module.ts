@@ -8,6 +8,13 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { AddNoteComponent } from './pages/add-note/add-note.component';
+import { ListAllComponent } from './pages/list-all/list-all.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { OverviewComponent } from './pages/overview/overview.component';
+import { FormsModule } from '@angular/forms';
+import { QuillModule } from 'ngx-quill';
 
 @NgModule({
   declarations: [
@@ -16,11 +23,18 @@ import { RegisterComponent } from './pages/register/register.component';
     FooterComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    DashboardComponent,
+    AddNoteComponent,
+    ListAllComponent,
+    ProfileComponent,
+    OverviewComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    QuillModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
