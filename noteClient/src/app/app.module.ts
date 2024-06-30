@@ -15,7 +15,6 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { OverviewComponent } from './pages/overview/overview.component';
 import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
-
 @NgModule({
   declarations: [
     AppComponent,
