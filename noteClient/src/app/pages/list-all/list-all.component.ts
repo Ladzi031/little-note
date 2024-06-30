@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./list-all.component.css']
 })
 export class ListAllComponent {
-
+  users: any[] = [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 22, 2, 2];
 }
