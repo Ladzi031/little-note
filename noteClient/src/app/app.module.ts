@@ -15,6 +15,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { OverviewComponent } from './pages/overview/overview.component';
 import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
+import { SearchPipe } from './pipes/search.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +28,8 @@ import { QuillModule } from 'ngx-quill';
     AddNoteComponent,
     ListAllComponent,
     ProfileComponent,
-    OverviewComponent
+    OverviewComponent,
+    SearchPipe
   ],
   imports: [
     BrowserModule,
