@@ -1,3 +1,16 @@
 .fa-user {
   font-size: 150px;
 }
+@media screen and (max-width: 800px) {
+  #main {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+  }
+  #buttons {
+    display: flex;
+    width: 100%;
+  }
+}

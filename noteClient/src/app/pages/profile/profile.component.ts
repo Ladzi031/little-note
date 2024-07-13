@@ -6,5 +6,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
+  shouldDisplayUpdateSection: boolean = false;
+  updateAttribute: string = "";
+  public display() {
+    this.shouldDisplayUpdateSection = true;
+  }
 
+  public update() {
+    this.shouldDisplayUpdateSection = false;
+    
+  }
+
+  public changed() {
+  }
 }
