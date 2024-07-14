@@ -1,33 +1,30 @@
 package com.diary.noteToSelf.services.impl;
 
 import com.diary.noteToSelf.domain.entities.Person;
+import com.diary.noteToSelf.repositories.UserRepository;
 import com.diary.noteToSelf.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
     @Override
-    public String createUser(Person person) {
-        return null;
+    public Person saveUser(Person person) {
+        return userRepository.save(person);
     }
 
     @Override
-    public String getUser(String userId) {
-        return null;
-    }
+    public Optional<Person> getUser(Long userId) {
+        return userRepository.findById(userId);
 
-    @Override
-    public String updateUser(Person person) {
-        return null;
     }
-
     @Override
-    public String deleteUser(Person person) {
-        return null;
-    }
-
-    @Override
-    public String deleteUser(Long personId) {
-        return null;
+    public void deleteUser(Long personId) {
+        userRepository.deleteById(personId);
     }
 }
