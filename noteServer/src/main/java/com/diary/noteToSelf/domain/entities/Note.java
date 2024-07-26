@@ -23,8 +23,5 @@ public class Note {
     private Date creationDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModified;
-    @ManyToOne
-    @JoinColumn(name = "person_id")
-    private Person person;
 }
 

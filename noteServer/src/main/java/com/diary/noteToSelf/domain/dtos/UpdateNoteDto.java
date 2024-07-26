@@ -11,11 +11,10 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Data
-public class NoteDto {
+public class UpdateNoteDto {
     private Long userId;
     private Long noteId;
     private String title;
     private String content;
-    private Date creationDate = new Date();
-    private Date lastModified;
+    private Date lastModified = new Date();
 }

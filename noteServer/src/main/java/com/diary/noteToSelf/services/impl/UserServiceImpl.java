@@ -13,6 +13,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
     @Override
     public Person saveUser(Person person) {
         return userRepository.save(person);
@@ -20,11 +21,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<Person> getUser(Long userId) {
-        return userRepository.findById(userId);
+        Optional<Person> p = userRepository.findById(userId);
+        Optional<Person> x = userRepository.findById(userId);
+        Object test = x.map(u -> u.getNotes().size()).orElse(null);
+        return p;
 
     }
+
     @Override
     public void deleteUser(Long personId) {
         userRepository.deleteById(personId);
+    }
+
+    @Override
+    public Boolean userExists(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Optional<Person> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

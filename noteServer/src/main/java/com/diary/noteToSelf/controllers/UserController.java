@@ -20,33 +20,33 @@ public class UserController {
     private final UserService userService;
     private final Mapper<Person, PersonDto> personMapper;
 
-    @PostMapping()
-    public ResponseEntity<PersonDto> createProfile( @RequestBody PersonDto personDto) {
-        Person personEntity = personMapper.mapToEntity(personDto);
-        Person personSaved = userService.saveUser(personEntity);
-        return new ResponseEntity<>(personMapper.mapToDto(personSaved), HttpStatus.CREATED);
-    }
     @GetMapping("/{id}")
     public ResponseEntity<PersonDto> getProfile(@PathVariable() Long id) {
-       Optional<Person> person = userService.getUser(id);
-        return person.map(value -> new ResponseEntity<>(personMapper.mapToDto(value), HttpStatus.FOUND))
+        Optional<Person> person = userService.getUser(id);
+        return person.map(value -> {
+                    PersonDto personDto = personMapper.mapToDto(value);
+                    return new ResponseEntity<>(personDto, HttpStatus.OK);
+                })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<PersonDto> updateDetails(@RequestBody UpdateUserDto userDto) {
-       Optional<Person> person =  userService.getUser(userDto.getId());
-      return person.map((p) -> {
-           if(userDto.getAttribute().equals("name")) p.setName(userDto.getNewValue());
-           else p.setEmail(userDto.getNewValue());
-           Person updatedPerson = userService.saveUser(p);
-           return new ResponseEntity<>(personMapper.mapToDto(updatedPerson), HttpStatus.OK);
-      })
-              .orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<Person> person = userService.getUser(userDto.getId());
+        return person.map(p -> {
+                    if ("name".equals(userDto.getAttribute())) {
+                        p.setName(userDto.getNewValue());
+                    } else if ("email".equals(userDto.getAttribute())) {
+                        p.setEmail(userDto.getNewValue());
+                    }
+                    Person updatedPerson = userService.saveUser(p);
+                    return new ResponseEntity<>(personMapper.mapToDto(updatedPerson), HttpStatus.OK);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProfile(@PathVariable() Long id) {
+    public ResponseEntity<?> deleteProfile(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }

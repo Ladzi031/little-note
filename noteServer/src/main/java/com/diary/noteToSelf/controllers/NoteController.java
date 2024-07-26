@@ -1,50 +1,75 @@
 package com.diary.noteToSelf.controllers;
 
 import com.diary.noteToSelf.domain.dtos.NoteDto;
-import com.diary.noteToSelf.domain.dtos.PersonDto;
+import com.diary.noteToSelf.domain.dtos.UpdateNoteDto;
 import com.diary.noteToSelf.domain.entities.Note;
 import com.diary.noteToSelf.domain.entities.Person;
 import com.diary.noteToSelf.mapper.Mapper;
 import com.diary.noteToSelf.services.NotesService;
 import com.diary.noteToSelf.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController()
+@RequestMapping("/notes")
 public class NoteController {
 
-
     private final UserService userService;
-    private final NotesService notesService;
-    private final Mapper<Person, PersonDto> personMapper;
     private final Mapper<Note, NoteDto> noteMapper;
+    private final NotesService notesService;
 
-    @GetMapping("/notes")
-    public String testNotes() {
-        return "noted!";
-    }
-    @GetMapping("/notes/{userId}")
-    public String getAllNotes(@PathVariable String userId) {
-        // get by personService;
-        return null;
-    }
-
-    @PostMapping("/notes")
-    public String createNotes(NoteDto noteDto) {
-        // personService or noteService will see
-        return null;
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<NoteDto>> getAllNotes(@PathVariable Long userId) {
+        List<NoteDto> listOfNotes = new ArrayList<>();
+        Optional<Person> user = userService.getUser(userId);
+        return user.map(u -> {
+            u.getNotes().forEach(n -> listOfNotes.add(noteMapper.mapToDto(n)));
+            return new ResponseEntity<>(listOfNotes, HttpStatus.OK);
+        }).orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/notes")
-    public String updateNote(NoteDto noteDto) {
-        // same here i can update via the personService or the noteService, will decide...
-        return null;
+    @PostMapping
+    public ResponseEntity<NoteDto> createNotes(@RequestBody NoteDto noteDto) {
+        Optional<Person> user = userService.getUser(noteDto.getUserId());
+        return user.map(u -> {
+            List<Note> userNotes = u.getNotes();
+            userNotes.add(noteMapper.mapToEntity(noteDto));
+            u.setNotes(userNotes);
+            userService.saveUser(u);
+            return new ResponseEntity<>(noteDto, HttpStatus.CREATED);
+        }).orElse(ResponseEntity.badRequest().build());
     }
 
-    @DeleteMapping("/notes/{userId}/{id}")
-    public String deleteNote(@PathVariable("userId") String userId, @PathVariable String id) {
-        // same story here
-        return null;
+    @PutMapping
+    public ResponseEntity<UpdateNoteDto> updateNote(@RequestBody UpdateNoteDto noteDto) {
+        Optional<Person> user = userService.getUser(noteDto.getUserId());
+        return user.map(u -> {
+            Optional<Note> noteOptional = u.getNotes().stream()
+                    .filter(n -> n.getNoteId() == noteDto.getNoteId()).findFirst();
+            return noteOptional.map(n -> {
+                n.setTitle(noteDto.getTitle());
+                n.setContent(noteDto.getContent());
+                n.setLastModified(noteDto.getLastModified());
+                userService.saveUser(u);
+                return new ResponseEntity<>(noteDto, HttpStatus.OK);
+            }).orElse(ResponseEntity.notFound().build());
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{noteId}")
+    public ResponseEntity<?> deleteNote(@PathVariable Long noteId) {
+        if (notesService.noteExists(noteId)) {
+            notesService.deleteNote(noteId);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-public class LoginDto {
+@Data
+public class RegisterDto {
     private String username;
+    private String name;
+    private String email;
     private String password;
-    private Boolean isLoggedIn = false; // things should not be done like this
 }

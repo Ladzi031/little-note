@@ -1,6 +1,5 @@
 package com.diary.noteToSelf.services;
 
-import com.diary.noteToSelf.domain.entities.Note;
 import com.diary.noteToSelf.domain.entities.Person;
 
 import java.util.Optional;
@@ -13,6 +12,11 @@ public interface UserService {
     public Optional<Person> getUser(Long userId);
 
 
-    public void deleteUser(Long personId);
+    public void deleteUser(Long userId);
+
+    public Boolean userExists(String username);
+
+    public Optional<Person> findByUsername(String username);
+
 
 }

@@ -1,6 +1,6 @@
 package com.diary.noteToSelf.mapper.impl;
 
-import com.diary.noteToSelf.domain.dtos.PersonDto;
+import com.diary.noteToSelf.domain.dtos.RegisterDto;
 import com.diary.noteToSelf.domain.entities.Person;
 import com.diary.noteToSelf.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
@@ -9,18 +9,18 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class UserModelMapperImpl implements Mapper<Person, PersonDto> {
+public class UserRegistrationModelMapperImpl implements Mapper<Person, RegisterDto> {
     private final ModelMapper modelMapper;
 
     @Override
-    public Person mapToEntity(PersonDto dto) {
+    public Person mapToEntity(RegisterDto dto) {
         return modelMapper.map(dto, Person.class);
     }
 
     @Override
-    public PersonDto mapToDto(Person entity) {
-        PersonDto personDto = modelMapper.map(entity, PersonDto.class);
-        personDto.setPassword(null);
-        return personDto;
+    public RegisterDto mapToDto(Person entity) {
+        RegisterDto registerDto = modelMapper.map(entity, RegisterDto.class);
+        registerDto.setPassword(null);
+        return registerDto;
     }
 }

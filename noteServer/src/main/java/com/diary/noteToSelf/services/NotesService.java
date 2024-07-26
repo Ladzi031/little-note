@@ -3,10 +3,10 @@ package com.diary.noteToSelf.services;
 import com.diary.noteToSelf.domain.entities.Note;
 
 public interface NotesService {
-    public String createNote(Note note);
+    public Note saveNote(Note note);
 
-    public String updateNote(Note note);
+    public void deleteNote(Long noteId);
 
-    public String deleteNote(String noteId);
-    public String deleteNote(Note note);
+    public Boolean noteExists(Long noteId);
+
 }
