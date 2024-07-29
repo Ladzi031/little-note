@@ -3,6 +3,10 @@ section {
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
+
+#on-card:hover {
+  border-color: #198754;
+}
 @media screen and (max-width: 800px) {
   section {
     display: flex;

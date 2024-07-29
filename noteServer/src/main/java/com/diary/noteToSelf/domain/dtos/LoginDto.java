@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class LoginDto {
+    private Long id;
     private String username;
     private String password;
     private Boolean isLoggedIn = false; // things should not be done like this

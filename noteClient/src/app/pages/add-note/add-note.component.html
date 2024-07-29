@@ -4,17 +4,34 @@
   <div class="mb-2 f-flex w-25">
     <label class="form-label mb-0 h5 fw-semibold">Title</label>
     <input
-      type="email"
+      type="text"
       class="form-control"
-      id="exampleInputEmail1"
+      [(ngModel)]="title"
       aria-describedby="emailHelp"
     />
   </div>
   <div class="w-80">
     <label class="form-label mb-0 h5 fw-semibold d-block">Note</label>
-    <quill-editor [(ngModel)]="content"></quill-editor>
+    <quill-editor
+      [(ngModel)]="content"
+      [modules]="{
+        toolbar: [
+          ['bold', 'italic', 'underline'],
+          [{ font: [] }],
+          [{ size: [] }],
+          [{ color: [] }],
+          [{ background: [] }],
+          [{ align: [] }],
+          ['blockquote', 'code-block'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          ['link', 'clean'],
+        ],
+      }"
+    ></quill-editor>
   </div>
   <div>
-    <button class="btn btn-primary">  <i class="fa fa-plus"></i>  </button>
+    <button class="btn btn-primary" (click)="addNote()">
+      <i class="fa fa-plus"></i>
+    </button>
   </div>
 </div>

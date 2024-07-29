@@ -1,31 +1,44 @@
-<section>
-  <div class="my-auto p-4" *ngFor="let x of users; let i = index">
-    <div class="card" style="width: 18rem">
+<section *ngIf="listOfNotes.length != 0; else info">
+  <div class="my-auto p-4" *ngFor="let note of listOfNotes; let i = index">
+    <div id="on-card" class="card" style="width: 18rem">
       <div class="card-body">
-        <h5 class="card-title text-center">Demo Title</h5>
-        <p class="card-text">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Commodi vel
-          recusandae repellendus, sit explicabo omnis?...
-        </p>
-
+        <h5 class="card-title text-center">{{ note.title | titlecase }}</h5>
+        <small class="card-subtitle mb-2 text-body-secondary text-end w-25">
+          created:
+          {{ note.creationDate | date: "yyyy-mm-dd, hh:mm" }}</small
+        >
+        <div class="card-text d-flex justify-content-center">
+          <img [src]="note.image" alt="" width="80px" />
+        </div>
+        <small
+          *ngIf="note.lastModified != null || note.lastModified != undefined"
+          class="card-subtitle mb-2 text-body-secondary text-end w-25"
+        >
+          last modified Date:
+          {{ note.lastModified | date: "yyyy-mm-dd hh:mm" }}</small
+        >
         <div
           class="d-flex flex-wrap justify-content-between align-items-center"
         >
           <div
             class="d-flex flex-wrap justify-content-evenly align-items-center"
           >
-            <a href="#" class="btn btn-outline-success"
+            <a class="btn btn-outline-success" (click)="viewNote(note.noteId!)"
               ><i class="fa fa-glasses"> </i> view</a
             >
-            <a href="#" class="btn btn-outline-success"
+            <a
+              class="btn btn-outline-success"
+              (click)="deleteNote(note.noteId! + 1)"
               ><i class="fa fa-trash"> </i> Delete</a
             >
           </div>
-          <small class="card-subtitle mb-2 text-body-secondary text-end w-25"
-            >12 Dec '24</small
-          >
         </div>
       </div>
     </div>
   </div>
 </section>
+<ng-template #info>
+  <div class="d-flex justify-content-center text-center">
+    <p>{{ message }}</p>
+  </div>
+</ng-template>

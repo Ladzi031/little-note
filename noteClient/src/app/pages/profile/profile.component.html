@@ -1,71 +1,126 @@
 <!--<img src="" class="card-img-top" alt="">-->
-<div id="main" class="d-flex justify-content-around align-items-center pt-4">
-  <div class="card">
-    <div
-      class="border border-primary-subtle rounded-4 d-flex justify-content-center align-items-center pt-4 card-img-top"
-    >
-      <i class="fa fa-user"></i>
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">
-        Some quick example text to build on the card title and make up the bulk
-        of the card's content.
-      </p>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">An item</li>
-      <li class="list-group-item">A second item</li>
-      <li class="list-group-item">A third item</li>
-    </ul>
-    <div id="buttons" class="card-body d-flex w-80 justify-content-around">
-      <a
-        href="#"
-        class="btn btn-danger"
-        [ngClass]="shouldDisplayUpdateSection ? 'disabled' : ''"
-        >Delete profile</a
-      >
-      <a
-        class="btn btn-primary"
-        [ngClass]="shouldDisplayUpdateSection ? 'disabled' : ''"
-        (click)="display()"
-        >Update details</a
-      >
-    </div>
-  </div>
-  <!-- the update section -->
-  <div *ngIf="shouldDisplayUpdateSection">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Update Details</h5>
-      </div>
-      <div class="card-body">
-        <select
-          [(ngModel)]="updateAttribute"
-          class="form-select form-select-sm"
-          aria-label=".form-select-sm example"
-        >
-          <option selected>Open this select menu</option>
-          <option value="Name">Name</option>
-          <option value="Email">Email</option>
-        </select>
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">{{
-            updateAttribute
-          }}</label>
-          <input
-            type="text"
-            class="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-          />
-        </div>
 
-        <button class="btn btn-success card-link" (click)="update()">
-          Update
-        </button>
+<h5 class="card-title text-center">User Profile</h5>
+<div *ngIf="userProfile != null || userProfile != undefined; else noData">
+  <div id="main" class="d-flex justify-content-around align-items-center pt-4">
+    <div class="card">
+      <div
+        class="border border-primary-subtle rounded-4 d-flex justify-content-center align-items-center pt-4 card-img-top"
+      >
+        <i class="fa fa-user"></i>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ userProfile.name | titlecase }}</h5>
+        <p class="card-text h">Some description here of some sort?</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <table class="table table-sm caption-top p-4 w-75">
+            <tbody>
+              <tr>
+                <th scope="row"><small>Username</small></th>
+                <td>{{ userProfile.username }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        <li class="list-group-item">
+          <table class="table table-sm caption-top p-4 w-75">
+            <tbody>
+              <tr>
+                <th scope="row"><small>Email</small></th>
+                <td>{{ userProfile.email }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        <li class="list-group-item">
+          <table class="table table-sm caption-top p-4 w-75">
+            <tbody>
+              <tr>
+                <th scope="row"><small>Password</small></th>
+                <td>{{ userProfile.password }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        <li class="list-group-item">
+          <table class="table table-sm caption-top p-4 w-75">
+            <tbody>
+              <tr>
+                <th scope="row"><small>No of Notes</small></th>
+                <td>{{ userProfile.notes.length }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+      <div id="buttons" class="card-body d-flex w-80 justify-content-around">
+        <a
+          class="btn btn-danger"
+          [ngClass]="shouldDisplayUpdateSection ? 'disabled' : ''"
+          (click)="deleteProfile()"
+          >Delete profile</a
+        >
+        <a
+          class="btn btn-primary"
+          [ngClass]="shouldDisplayUpdateSection ? 'disabled' : ''"
+          (click)="display()"
+          >Update details</a
+        >
       </div>
     </div>
+    <!-- the update section -->
+    <div *ngIf="shouldDisplayUpdateSection">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Update Details</h5>
+        </div>
+        <div class="card-body">
+          <select
+            [(ngModel)]="updateAttribute"
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+          >
+            <option value="Name">Name</option>
+            <option value="Email">Email</option>
+          </select>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">{{
+              updateAttribute
+            }}</label>
+            <input
+              type="text"
+              class="form-control"
+              aria-describedby="emailHelp"
+              [(ngModel)]="value"
+            />
+          </div>
+          <button class="btn btn-success card-link" (click)="update()">
+            Update
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- end of update section -->
   </div>
-  <!-- end of update section -->
 </div>
+<ng-template #noData>
+  <p>No profile data</p>
+</ng-template>
+
+<!--
+
+        <div><small class="attr">Username</small></div>
+        <div>{{ userProfile.username }}</div>
+
+  <div>
+          <small class="attr">N<span id="under">o</span> of Notes</small>
+        </div>
+        <div>{{ userProfile.notes.length }}</div>
+      
+
+        <div><small class="attr">Email</small></div>
+        <div>{{ userProfile.email }}</div>
+
+        -->

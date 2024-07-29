@@ -18,6 +18,7 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long noteId;
     private String title;
+	@Column(length = 6144)
     private String content;
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;

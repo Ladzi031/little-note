@@ -1,0 +1,24 @@
+<header class="d-flex justify-content-center text-center m-4">
+  <p class="display-4">{{ note?.title | titlecase }}</p>
+</header>
+
+<section
+  class="d-flex flex-column justify-content-center"
+  *ngIf="content !== null; else noContent"
+>
+  <small>created: {{ note?.creationDate | date: "YYYY-MM-dd, hh:mm a" }}</small>
+  <quill-editor
+    [modules]="{ toolbar: false }"
+    [readOnly]="true"
+    [contentEditable]="false"
+    [(ngModel)]="content"
+  ></quill-editor>
+</section>
+<ng-template #noContent>
+  <div class="d-flex justify-content-center text-center m-4">
+    <p>No content to display something is definately wrong!</p>
+    <!--
+    when i add authentication guards this code will never reach this point, !
+    -->
+  </div>
+</ng-template>

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController()
@@ -63,13 +65,16 @@ public class NoteController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{noteId}")
-    public ResponseEntity<?> deleteNote(@PathVariable Long noteId) {
-        if (notesService.noteExists(noteId)) {
-            notesService.deleteNote(noteId);
+    @DeleteMapping("{userId}/{noteId}")
+    public ResponseEntity<?> deleteNote(@PathVariable Long userId, @PathVariable Long noteId) {
+		Optional<Person> user = userService.getUser(userId);
+		return user.map(u -> {
+            Optional<Note> note = u.getNotes().stream().filter(n -> !Objects.equals(n.getNoteId(), noteId)).findFirst();
+            note.ifPresent(value -> u.getNotes().remove(value));
+            userService.saveUser(u);
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+		}
+		).orElse(ResponseEntity.notFound().build());
+        
     }
 }

@@ -27,10 +27,9 @@ public class NoteServiceImpl implements NotesService {
     public Boolean noteExists(Long noteId) {
         return notesRepository.existsById(noteId);
 
-
         /*
             found some articles on the internet that discourage using this method:'existsById()'
-                because as being too "Computationally Expensive"
+                because it is too "Computationally Expensive"
             when profiled, I found it to be true as well, but this is just a pet-project of mine just learning stuff along the way :)
             so use with caution in serious applications!.
         */

@@ -13,9 +13,11 @@ import { AddNoteComponent } from './pages/add-note/add-note.component';
 import { ListAllComponent } from './pages/list-all/list-all.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { OverviewComponent } from './pages/overview/overview.component';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 import { SearchPipe } from './pipes/search.pipe';
+import { HttpClientModule } from '@angular/common/http';
+import { ViewNoteComponent } from './pages/view-note/view-note.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,15 +31,18 @@ import { SearchPipe } from './pipes/search.pipe';
     ListAllComponent,
     ProfileComponent,
     OverviewComponent,
-    SearchPipe
+    SearchPipe,
+    ViewNoteComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     FormsModule,
-    QuillModule.forRoot()
+    HttpClientModule,
+    QuillModule.forRoot(),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -21,6 +21,6 @@ public class Person {
     private String name;
     private String email;
     private String password;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Note> notes;
 }

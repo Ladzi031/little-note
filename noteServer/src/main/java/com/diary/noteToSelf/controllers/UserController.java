@@ -34,9 +34,9 @@ public class UserController {
     public ResponseEntity<PersonDto> updateDetails(@RequestBody UpdateUserDto userDto) {
         Optional<Person> person = userService.getUser(userDto.getId());
         return person.map(p -> {
-                    if ("name".equals(userDto.getAttribute())) {
+					if ("Name".equals(userDto.getAttribute())) {
                         p.setName(userDto.getNewValue());
-                    } else if ("email".equals(userDto.getAttribute())) {
+                    } else if ("Email".equals(userDto.getAttribute())) {
                         p.setEmail(userDto.getNewValue());
                     }
                     Person updatedPerson = userService.saveUser(p);

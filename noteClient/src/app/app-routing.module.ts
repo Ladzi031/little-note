@@ -8,27 +8,30 @@ import { AddNoteComponent } from './pages/add-note/add-note.component';
 import { ListAllComponent } from './pages/list-all/list-all.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { OverviewComponent } from './pages/overview/overview.component';
+import { ViewNoteComponent } from './pages/view-note/view-note.component';
 
 const routes: Routes = [
-  { path: "", component: HomeComponent },
-  { path: "login", component: LoginComponent },
-  { path: "register", component: RegisterComponent },
-  { path: "home", redirectTo: "", pathMatch: "full" },
+  { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'home', redirectTo: '', pathMatch: 'full' },
   {
-    path: "dashboard", component: DashboardComponent, // guard this one too 
+    path: 'dashboard',
+    component: DashboardComponent,
     children: [
-      { path: "add", component: AddNoteComponent },
-      { path: "list", component: ListAllComponent },
-      { path: "profile", component: ProfileComponent },
-      { path: "overview", component: OverviewComponent },  // for the admin, so guard it!
-      { path: "**", redirectTo: "add", pathMatch: "full" }  // [security check] is this safe?
-    ]
+      { path: 'add', component: AddNoteComponent },
+      { path: 'list', component: ListAllComponent },
+      { path: 'view/:noteId', component: ViewNoteComponent },
+      { path: 'profile', component: ProfileComponent },
+      { path: 'overview', component: OverviewComponent },
+      { path: '**', redirectTo: 'add', pathMatch: 'full' },
+    ],
   },
-  { path: "**", redirectTo: "", pathMatch: "full" }
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

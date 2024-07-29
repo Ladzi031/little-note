@@ -4,15 +4,17 @@
   <div>
     <p class="h5 fw-semibold">Welcome back.</p>
   </div>
+
   <div class="card my-4">
-    <form class="card-body">
+    <form class="card-body" [formGroup]="loginForm" (ngSubmit)="login()">
       <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Email address</label>
+        <label for="exampleInputEmail1" class="form-label">Username</label>
         <input
-          type="email"
+          type="text"
           class="form-control"
-          id="exampleInputEmail1"
           aria-describedby="emailHelp"
+          formControlName="username"
+          required
         />
       </div>
       <div class="mb-3">
@@ -20,7 +22,8 @@
         <input
           type="password"
           class="form-control"
-          id="exampleInputPassword1"
+          formControlName="password"
+          required
         />
       </div>
       <div
@@ -29,7 +32,9 @@
         <button type="submit" class="btn btn-primary">
           <i class="fa fa-rocket"></i> Login
         </button>
-        <button class="btn btn-warning"><i class="fa fa-bed"></i> forgot?</button>
+        <button class="btn btn-warning" (click)="forgot()">
+          <i class="fa fa-bed"></i> forgot?
+        </button>
       </div>
     </form>
   </div>

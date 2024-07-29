@@ -1,6 +1,15 @@
 .fa-user {
   font-size: 150px;
 }
+.attr {
+  border-bottom: 1px solid silver;
+}
+.h {
+  visibility: hidden;
+}
+#under {
+  text-decoration: underline;
+}
 @media screen and (max-width: 800px) {
   #main {
     display: flex;
