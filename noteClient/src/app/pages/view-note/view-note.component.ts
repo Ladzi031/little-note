@@ -15,7 +15,7 @@ export class ViewNoteComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private notesService: NotesService,
-  ) {}
+  ) { }
 
   public ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((p) => {

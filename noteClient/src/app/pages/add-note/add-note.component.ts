@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Notify } from 'notiflix';
+import { Subscription } from 'rxjs';
 import { NoteDto } from 'src/app/model/notes';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NotesService } from 'src/app/services/notes.service';
@@ -10,14 +11,16 @@ import { NotesService } from 'src/app/services/notes.service';
   templateUrl: './add-note.component.html',
   styleUrls: ['./add-note.component.css'],
 })
-export class AddNoteComponent {
+export class AddNoteComponent implements OnDestroy {
   content!: string;
   title!: string;
+  noteServiceSubscription !: Subscription;
   constructor(
-    private router: Router,
     private notesService: NotesService,
     private authenticationService: AuthenticationService,
-  ) {}
+  ) {
+
+  }
 
   public addNote() {
     const id = this.authenticationService.getUserId();
@@ -28,7 +31,7 @@ export class AddNoteComponent {
           content: this.content,
           userId: id,
         };
-        this.notesService.addNote(newNote).subscribe({
+        this.noteServiceSubscription = this.notesService.addNote(newNote).subscribe({
           next: (data) => {
             Notify.success('note successfully created\n' + data.creationDate);
             (this.content = ''), (this.title = '');
@@ -41,9 +44,10 @@ export class AddNoteComponent {
       } else {
         Notify.info('please fill the required fields');
       }
-    } else {
-      Notify.failure('You are not loggedIn');
-      this.router.navigate(['/login']);
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.noteServiceSubscription.unsubscribe();
   }
 }

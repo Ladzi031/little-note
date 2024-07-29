@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" (click)="home()">
       <img src="../../../assets/images/book.png" alt="" width="27rem" />
       note to self</a
     >
@@ -23,7 +23,7 @@
           >
         </li>
         <li class="nav-item" *ngIf="!isUserLoggedIn">
-          <a class="nav-link" href="#"
+          <a class="nav-link" (click)="register()"
             ><i class="fa fa-right-to-bracket"></i> Register</a
           >
         </li>

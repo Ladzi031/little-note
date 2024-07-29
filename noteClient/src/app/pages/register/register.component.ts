@@ -4,6 +4,7 @@ import { RegisterUserDto } from 'src/app/model/registerUser';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Notify } from 'notiflix';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   registrationForm: FormGroup;
+  authSubscription !:Subscription;
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router,
@@ -34,7 +36,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       password: this.registrationForm.get('password')?.value,
       email: this.registrationForm.get('email')?.value,
     };
-    this.authenticationService.registerUser(newUser).subscribe({
+    this.authSubscription =  this.authenticationService.registerUser(newUser).subscribe({
       next: (data) => {
         if (data.id != null || data.id != undefined) {
           Notify.success('successfully registered');
@@ -50,5 +52,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       },
     });
   }
-  public ngOnDestroy(): void {}
+  public ngOnDestroy(): void {
+    this.authSubscription.unsubscribe();
+  }
 }

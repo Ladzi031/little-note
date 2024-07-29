@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Notify } from 'notiflix';
+import { Subscription } from 'rxjs';
 import { NoteDto } from 'src/app/model/notes';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NotesService } from 'src/app/services/notes.service';
@@ -10,21 +11,22 @@ import { NotesService } from 'src/app/services/notes.service';
   templateUrl: './list-all.component.html',
   styleUrls: ['./list-all.component.css'],
 })
-export class ListAllComponent implements OnInit {
+export class ListAllComponent implements OnInit, OnDestroy {
   message: string = "you don't have any notes";
   listOfNotes: NoteDto[] = [];
 
+  noteSubscription !: Subscription;
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
     private notesService: NotesService,
     private route: ActivatedRoute,
-  ) {}
+  ) { }
 
   public ngOnInit(): void {
     const id = this.authenticationService.getUserId();
     if (id != null || id != undefined) {
-      this.notesService.getAllNotes(id).subscribe({
+      this.noteSubscription = this.notesService.getAllNotes(id).subscribe({
         next: (data) => {
           this.listOfNotes = data;
         },
@@ -34,9 +36,6 @@ export class ListAllComponent implements OnInit {
           Notify.failure(err.message);
         },
       });
-    } else {
-      Notify.failure('You are not logged-In');
-      this.router.navigate(['/login']);
     }
   }
 
@@ -48,11 +47,11 @@ export class ListAllComponent implements OnInit {
     if (id != null || id != undefined) {
       // a custom confirm modal ?
       if (confirm('are you sure you want to delete the note?')) {
-        this.notesService.deleteNote(id, noteId).subscribe({
+        this.noteSubscription = this.notesService.deleteNote(id, noteId).subscribe({
           next: (data: any) => {
             if (data == null) {
               Notify.success('note deleted successfully');
-              this.notesService
+              this.noteSubscription = this.notesService
                 .getAllNotes(this.authenticationService.getUserId()!)
                 .subscribe((d) => {
                   this.listOfNotes = d;
@@ -65,9 +64,10 @@ export class ListAllComponent implements OnInit {
           },
         });
       }
-    } else {
-      Notify.failure('you not logged In');
-      this.router.navigate(['/login']);
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.noteSubscription.unsubscribe();
   }
 }

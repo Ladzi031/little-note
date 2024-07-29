@@ -15,7 +15,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   constructor(
     private authentication: AuthenticationService,
     private router: Router,
-  ) {}
+  ) { }
 
   public ngOnInit(): void {
     this.authenticationSub = this.authentication.subjectLoggedIn.subscribe(
@@ -35,5 +35,11 @@ export class NavBarComponent implements OnInit, OnDestroy {
   }
   public login() {
     this.router.navigate(['/login']);
+  }
+  public register() {
+    this.router.navigate(['/register']);
+  }
+  public home() {
+    this.router.navigate(['/']);
   }
 }

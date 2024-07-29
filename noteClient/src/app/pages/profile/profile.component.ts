@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Notify } from 'notiflix';
+import { Subscription } from 'rxjs';
 import { UserProfileDto } from 'src/app/model/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UsersService } from 'src/app/services/users.service';
@@ -10,20 +11,21 @@ import { UsersService } from 'src/app/services/users.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   shouldDisplayUpdateSection: boolean = false;
   updateAttribute!: string;
   userProfile!: UserProfileDto;
   value!: string;
+  usersSubscription !: Subscription;
   constructor(
     private router: Router,
     private usersService: UsersService,
     private authenticationService: AuthenticationService,
-  ) {}
+  ) { }
   public ngOnInit(): void {
     const id = this.authenticationService.getUserId();
     if (id != null || id != undefined) {
-      this.usersService.getUserProfile(id).subscribe({
+     this.usersSubscription = this.usersService.getUserProfile(id).subscribe({
         next: (data) => {
           this.userProfile = data;
           this.userProfile.password = '*'.repeat(8);
@@ -33,8 +35,6 @@ export class ProfileComponent implements OnInit {
           Notify.failure(err.message);
         },
       });
-    } else {
-      this.routeUser();
     }
   }
   public display() {
@@ -49,7 +49,7 @@ export class ProfileComponent implements OnInit {
           this.value != null) ||
         this.value != undefined
       ) {
-        this.usersService
+        this.usersSubscription = this.usersService
           .updateDetails(this.updateAttribute, this.value, id)
           .subscribe({
             next: (data) => {
@@ -63,8 +63,6 @@ export class ProfileComponent implements OnInit {
             },
           });
       }
-    } else {
-      this.routeUser();
     }
   }
 
@@ -76,7 +74,7 @@ export class ProfileComponent implements OnInit {
     ) {
       const id = this.authenticationService.getUserId();
       if (id != null || id != undefined) {
-        this.usersService.deleteProfile(id).subscribe({
+        this.usersSubscription = this.usersService.deleteProfile(id).subscribe({
           next: (data) => {
             Notify.info('account deleted sucessfully');
             this.authenticationService.logout(); // discards current id in the client-side
@@ -89,9 +87,8 @@ export class ProfileComponent implements OnInit {
         });
       }
     }
-  }
-  private routeUser() {
-    Notify.failure('Please Login');
-    this.router.navigate(['/login']);
-  }
+   }
+   public ngOnDestroy(): void {
+     this.usersSubscription.unsubscribe();
+   }
 }
