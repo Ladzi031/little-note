@@ -14,7 +14,7 @@ export class NotesService {
   ];
   private listOfNotes: NoteDto[] = [];
   note!: NoteDto;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public getNote(noteId: number): NoteDto {
     return this.listOfNotes.filter((n) => n.noteId == noteId)[0];

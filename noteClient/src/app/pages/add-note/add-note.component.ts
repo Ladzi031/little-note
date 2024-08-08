@@ -12,8 +12,8 @@ import { NotesService } from 'src/app/services/notes.service';
   styleUrls: ['./add-note.component.css'],
 })
 export class AddNoteComponent implements OnDestroy {
-  content!: string;
-  title!: string;
+  content: string = "";
+  title: string = "";
   noteServiceSubscription !: Subscription;
   constructor(
     private notesService: NotesService,
@@ -41,6 +41,7 @@ export class AddNoteComponent implements OnDestroy {
             Notify.failure(err.message);
           },
         });
+
       } else {
         Notify.info('please fill the required fields');
       }

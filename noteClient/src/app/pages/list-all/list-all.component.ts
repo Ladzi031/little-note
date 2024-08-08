@@ -15,7 +15,7 @@ export class ListAllComponent implements OnInit, OnDestroy {
   message: string = "you don't have any notes";
   listOfNotes: NoteDto[] = [];
 
-  noteSubscription !: Subscription;
+  noteSubscription: Subscription[] = [];
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
@@ -26,7 +26,7 @@ export class ListAllComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     const id = this.authenticationService.getUserId();
     if (id != null || id != undefined) {
-      this.noteSubscription = this.notesService.getAllNotes(id).subscribe({
+      const sub = this.notesService.getAllNotes(id).subscribe({
         next: (data) => {
           this.listOfNotes = data;
         },
@@ -36,6 +36,7 @@ export class ListAllComponent implements OnInit, OnDestroy {
           Notify.failure(err.message);
         },
       });
+      this.noteSubscription.push(sub);
     }
   }
 
@@ -47,11 +48,11 @@ export class ListAllComponent implements OnInit, OnDestroy {
     if (id != null || id != undefined) {
       // a custom confirm modal ?
       if (confirm('are you sure you want to delete the note?')) {
-        this.noteSubscription = this.notesService.deleteNote(id, noteId).subscribe({
+        const sub = this.notesService.deleteNote(id, noteId).subscribe({
           next: (data: any) => {
             if (data == null) {
               Notify.success('note deleted successfully');
-              this.noteSubscription = this.notesService
+              this.notesService
                 .getAllNotes(this.authenticationService.getUserId()!)
                 .subscribe((d) => {
                   this.listOfNotes = d;
@@ -63,11 +64,12 @@ export class ListAllComponent implements OnInit, OnDestroy {
             Notify.failure(err.message);
           },
         });
+        this.noteSubscription.push(sub);
       }
     }
   }
 
   public ngOnDestroy(): void {
-    this.noteSubscription.unsubscribe();
+    this.noteSubscription.forEach(s => s.unsubscribe());
   }
 }

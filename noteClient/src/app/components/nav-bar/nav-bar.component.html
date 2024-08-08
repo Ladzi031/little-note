@@ -28,7 +28,7 @@
           >
         </li>
         <li class="nav-item" *ngIf="isUserLoggedIn">
-          <a class="nav-link" href="#">Dashboard</a>
+          <a class="nav-link" (click)="dashboard()">Dashboard</a>
         </li>
         <li class="nav-item" *ngIf="!isUserLoggedIn">
           <a class="nav-link" (click)="login()"

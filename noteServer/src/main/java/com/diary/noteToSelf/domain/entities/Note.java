@@ -15,7 +15,7 @@ import java.util.Date;
 @Entity
 public class Note {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long noteId;
     private String title;
 	@Column(length = 6144)

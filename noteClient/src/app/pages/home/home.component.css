@@ -1,0 +1,26 @@
+p {
+  text-wrap: wrap;
+}
+button:nth-child(2) {
+  opacity: 0;
+  animation: wiggle 0.5s ease-in 3s forwards;
+}
+
+@keyframes wiggle {
+  0% {
+    opacity: 0;
+    transform: rotateZ(0deg);
+  }
+  20% {
+    opacity: 0.2;
+    transform: rotateZ(30deg);
+  }
+  60% {
+    opacity: 0.5;
+    transform: rotateZ(-60deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateZ(0deg);
+  }
+}

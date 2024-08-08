@@ -42,4 +42,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   public home() {
     this.router.navigate(['/']);
   }
+  public dashboard() {
+    this.router.navigate(['/dashboard']);
+  }
 }
